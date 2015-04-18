@@ -1,4 +1,4 @@
-# README #
+# Boston Manager Web Services #
 
 The application for Boston needs web services for several modules. At the moment the Task Module is in development process 
 
