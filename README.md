@@ -20,7 +20,7 @@ pip install django==1.6
 
 * Start developing
 
-
+----------------------------------------------------------------------------------------------------------------
 ** Note: To deactive a virtualenv just type in the following command:
 ```
 #!python
