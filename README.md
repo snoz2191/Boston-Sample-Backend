@@ -21,4 +21,17 @@ pip install django==1.6
 * Start developing
 
 
+** Note: To deactive a virtualenv just type in the following command:
+```
+#!python
+deactivate
+```
+
+And to work on a virtualenv that has been already deactivated, just type in the following command:
+```
+#!python
+workon <virtualenv_name>
+```
+My name for the virtualenv is "Boston"
+
 ** Note: At the moment there is no database set up. So it can't be accesed to the admin area. We should take the decision of what database to use.
