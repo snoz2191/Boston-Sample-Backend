@@ -4,7 +4,6 @@ from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.renderers import JSONRenderer
 from Tasks.models import Login, LoginSerializer, UserSerializer, Status, StatusSerializer
 from django.views.decorators.csrf import csrf_exempt
 
@@ -23,16 +22,21 @@ class LoginService(APIView):
       # Authenticates the user
       user = authenticate(username=u.username, password=l.validated_data["password"])
 
+      # If user exists
       if user is not None:
+
+        # If the user is active in the DB
         if user.is_active:
           login(request, user)
           status = Status(code="OK",msg="OK")
           return Response(StatusSerializer(status).data)
 
         else:
-          return Response("Error!")
+          return Response("Error! User is inactive in DB")
+      
       else:
-        return Response("User is none")
+        return Response("User is none, he doesn't exist")
+
     def delete(self,request):
       logout(request)
       status = Status(code="OK",msg="OK")

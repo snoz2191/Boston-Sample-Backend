@@ -86,6 +86,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+"""
+    Research how does it work, is kind of weird
+"""
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
 DATABASES['default'] =  dj_database_url.config(default='postgres://bsncfvdqgzjyan:Zwkkf3i3JTIpXfeOq3JriyoVnn@ec2-184-73-165-195.compute-1.amazonaws.com:5432/d4lejen78ljqe5')
