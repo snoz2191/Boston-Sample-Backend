@@ -16,7 +16,7 @@ class LoginSerializer(serializers.ModelSerializer):
 
 # Status
 class Status(models.Model):
-  code = models.CharField(max_length=10)
+  code = models.CharField(max_length=20)
   msg = models.CharField(max_length=50)
 
 class StatusSerializer(serializers.ModelSerializer):

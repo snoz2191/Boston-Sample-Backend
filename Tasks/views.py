@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from Tasks.models import Login, LoginSerializer, UserSerializer, Status, StatusSerializer
 from django.views.decorators.csrf import csrf_exempt
 
+
 class LoginService(APIView):
 
     def post(self,request):
