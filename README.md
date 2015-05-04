@@ -9,13 +9,14 @@ The application for Boston needs web services for several modules. At the moment
 #!python
 
 mkvirtualenv Boston
+workon Boston
 ```
 
-* Install the proper Django Version
+* Install all the requirements
 ```
 #!python
 
-pip install django==1.6
+pip install
 ```
 
 * Start developing
@@ -36,4 +37,3 @@ My name for the virtualenv is "Boston"
 
 
 -------------------------------------------------------------------------------------------------------------------
-** Note: At the moment there is no database set up. So it can't be accesed to the admin area. We should take the decision of what database to use.
