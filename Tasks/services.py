@@ -4,7 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from Tasks.models import Login, LoginSerializer, UserSerializer, Status, StatusSerializer
+from Tasks.models import Login, Status
+from Tasks.serializers import LoginSerializer, UserSerializer, StatusSerializer
 from django.views.decorators.csrf import csrf_exempt
 
 
