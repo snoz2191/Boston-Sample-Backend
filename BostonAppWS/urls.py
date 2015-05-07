@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from Tasks.views import  LoginService
+from Tasks.services import  LoginService
 from django.contrib import admin
 admin.autodiscover()
 
