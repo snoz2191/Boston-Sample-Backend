@@ -12,7 +12,7 @@ class LoginService(APIView):
 
     def post(self,request):
     
-      # Validate the Login be a proper request
+      # Validate the Login be a proper request (Json Parseable)
       try:
         l = LoginSerializer(data=request.data)
       except:
@@ -26,8 +26,9 @@ class LoginService(APIView):
         except User.DoesNotExist:
           status = STATUS_USER_INVALID
           return Response(StatusSerializer(status).data)
-      else:
-        status = STATUS_PARAMETERS_INVALID
+
+      # If is invalid the response are the errors
+      else: 
         return Response(l.errors)
 
       # Authenticates the user
@@ -42,11 +43,11 @@ class LoginService(APIView):
           status = STATUS_OK
           return Response(StatusSerializer(status).data)
 
-        else:
+        else: # User inactive
           status = STATUS_USER_INACTIVE
           return Response(StatusSerializer(status).data)
       
-      else:
+      else: # User doesnt exist
         status = STATUS_USER_INVALID
         return Response(StatusSerializer(status).data)
 
