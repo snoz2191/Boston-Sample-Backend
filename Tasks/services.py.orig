@@ -50,6 +50,10 @@ class LoginService(APIView):
           return Response(StatusSerializer(status).data)
       
       else: # User doesnt exist
+<<<<<<< HEAD
+=======
+        print "User does not exist"
+>>>>>>> feature/SignUp
         status = STATUS_USER_INVALID
         return Response(StatusSerializer(status).data)
 
