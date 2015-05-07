@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-# Create your views here.
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from Tasks.models import Login, Status
-from Tasks.serializers import LoginSerializer, UserSerializer, StatusSerializer
-from django.views.decorators.csrf import csrf_exempt
+from .models import Login, Status
+from .serializers import LoginSerializer, UserSerializer, StatusSerializer
+from .utils import STATUS_OK, STATUS_PARAMETERS_INVALID, STATUS_USER_INVALID, STATUS_USER_INACTIVE
 
 
 class LoginService(APIView):
@@ -18,7 +17,7 @@ class LoginService(APIView):
       if l.is_valid():
         u = User.objects.get(username=l.validated_data["username"])
       else:
-        status = Status(code="INVALID",msg="The format in the request is invalid")
+        status = STATUS_OK
         return Response(StatusSerializer(status).data)
 
       # Authenticates the user
@@ -30,16 +29,18 @@ class LoginService(APIView):
         # If the user is active in the DB
         if user.is_active:
           login(request, user)
-          status = Status(code="OK",msg="OK")
+          status = STATUS_OK
           return Response(StatusSerializer(status).data)
 
         else:
-          return Response("Error! User is inactive in DB")
+          status = STATUS_USER_INACTIVE
+          return Response(StatusSerializer(status).data)
       
       else:
-        return Response("User is none, he doesn't exist")
+        status = STATUS_USER_INVALID
+        return Response(StatusSerializer(status).data)
 
     def delete(self,request):
       logout(request)
-      status = Status(code="OK",msg="OK")
+      status = STATUS_OK
       return Response(StatusSerializer(status).data)
