@@ -7,20 +7,33 @@ from .models import Login, Status
 from .serializers import LoginSerializer, UserSerializer, StatusSerializer
 from .utils import STATUS_OK, STATUS_PARAMETERS_INVALID, STATUS_USER_INVALID, STATUS_USER_INACTIVE
 
+from django.contrib.auth.hashers import make_password
 
 class LoginService(APIView):
 
     def post(self,request):
-      l = LoginSerializer(data=request.data)
+    
+      # Validate the Login be a proper request (Json Parseable)
+      try:
+        l = LoginSerializer(data=request.data)
+      except:
+        status = STATUS_PARAMETERS_INVALID
+        return Response(StatusSerializer(status).data)
 
       # Validates format
       if l.is_valid():
-        u = User.objects.get(username=l.validated_data["username"])
-      else:
-        status = STATUS_OK
-        return Response(StatusSerializer(status).data)
+        try:
+          u = User.objects.get(username=l.validated_data["username"])
+        except User.DoesNotExist:
+          status = STATUS_USER_INVALID
+          return Response(StatusSerializer(status).data)
+
+      # If is invalid the response are the errors
+      else: 
+        return Response(l.errors)
 
       # Authenticates the user
+      print "Calling authenticate"
       user = authenticate(username=u.username, password=l.validated_data["password"])
 
       # If user exists
@@ -32,11 +45,12 @@ class LoginService(APIView):
           status = STATUS_OK
           return Response(StatusSerializer(status).data)
 
-        else:
+        else: # User inactive
           status = STATUS_USER_INACTIVE
           return Response(StatusSerializer(status).data)
       
-      else:
+      else: # User doesnt exist
+        print "User does not exist"
         status = STATUS_USER_INVALID
         return Response(StatusSerializer(status).data)
 
@@ -44,3 +58,19 @@ class LoginService(APIView):
       logout(request)
       status = STATUS_OK
       return Response(StatusSerializer(status).data)
+
+class SignUpService(APIView):
+  def post(self,request):
+    try:
+      u = UserSerializer(data=request.data)
+    except:
+      status = STATUS_PARAMETERS_INVALID
+      return Response(StatusSerializer(status).data)
+
+    if u.is_valid():
+      u.validated_data["password"] = make_password(password=u.validated_data["password"])
+      u.save()
+      status = STATUS_OK
+      return Response(StatusSerializer(status).data)
+    else:
+      return Response(u.errors)
