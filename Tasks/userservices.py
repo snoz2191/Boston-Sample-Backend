@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.hashers import make_password
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
 from .models import Login, Status
 from .serializers import LoginSerializer, UserSerializer, StatusSerializer
 from .utils import STATUS_OK, STATUS_PARAMETERS_INVALID, STATUS_USER_INVALID, STATUS_USER_INACTIVE
 
-from django.contrib.auth.hashers import make_password
 
 class LoginService(APIView):
 
@@ -33,7 +35,6 @@ class LoginService(APIView):
         return Response(l.errors)
 
       # Authenticates the user
-      print "Calling authenticate"
       user = authenticate(username=u.username, password=l.validated_data["password"])
 
       # If user exists
@@ -67,6 +68,7 @@ class SignUpService(APIView):
       return Response(StatusSerializer(status).data)
 
     if u.is_valid():
+      # Set hash password
       u.validated_data["password"] = make_password(password=u.validated_data["password"])
       u.save()
       status = STATUS_OK

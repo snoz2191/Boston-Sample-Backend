@@ -15,3 +15,8 @@ class Status(models.Model):
   code = models.CharField(max_length=20)
   msg = models.CharField(max_length=50)
 
+class Task(models.Model):
+  name = models.CharField(max_length=50)
+  category = models.CharField(max_length=50)
+  description = models.CharField(max_length=250)
+  creator = models.ForeignKey(User,to_field='username') 
