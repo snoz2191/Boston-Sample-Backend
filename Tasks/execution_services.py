@@ -16,9 +16,7 @@ class ExecutionListService(APIView):
   #POST method
   def post(self,request):
     try:
-      #request.data["creator"] = User.objects.get(username=request.data["creator"]).username
       execution = ExecutionSerializer(data=request.data)
-      
     except:
       return Response(StatusSerializer(STATUS_PARAMETERS_INVALID).data)
 
