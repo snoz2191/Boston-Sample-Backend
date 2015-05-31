@@ -10,8 +10,22 @@ from .models import Task
 class TaskListService(APIView):
     #GET method
     def get(self, request):
-        task_list = TaskSerializer(Task.objects.all(), many=True)
-        return Response(task_list.data)
+        id = self.request.query_params.get('id',None)
+
+        if id is not None:
+            try:
+                task = Task.objects.get(id=id)
+            except Task.DoesNotExist:
+                status = STATUS_TASK_NOT_FOUND
+                return Response(StatusSerializer(status).data)
+
+            response = TaskSerializer(task).data
+            response['status'] = StatusSerializer(STATUS_OK).data
+            return Response(response)
+
+        else:
+            task_list = TaskSerializer(Task.objects.all(), many=True)
+            return Response(task_list.data)
 
     #POST method
     def post(self, request):
