@@ -10,4 +10,5 @@ STATUS_USER_INVALID = Status(code="INVALID_USER", msg="User is not registered")
 
 # For Task
 STATUS_TASK_CREATOR_REQUIRED = Status(code="REQUIRED_PARAMETERS", msg="The creator field is required")
-STATUS_TASK_NOT_FOUND = Status(code="NOT_FOUND", msg="There is no task for the given id")
+STATUS_TASK_NOT_FOUND = Status(code="TASK_NOT_FOUND", msg="There is no task for the given id")
+STATUS_CREATOR_INVALID = Status(code="CREATOR_INVALID", msg="The creator is invalid or doesn't exists")
