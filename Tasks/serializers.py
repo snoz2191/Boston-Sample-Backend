@@ -1,6 +1,6 @@
 __author__ = 'domingo'
 from rest_framework import serializers
-from Tasks.models import *
+from Tasks.models import Task, Execution, Status, Login
 from django.contrib.auth.models import User
 
 #All of the Serializers of all the models are here
@@ -24,6 +24,22 @@ class UserSerializer(serializers.ModelSerializer):
 
 # Task Serializer
 class TaskSerializer(serializers.ModelSerializer):
+  creator = serializers.SlugRelatedField(
+      slug_field='username',
+      queryset=User.objects.all()
+    )
   class Meta:
     model = Task
     
+class ExecutionSerializer(serializers.ModelSerializer):
+  # Slug fields for foreign
+  task_associated = serializers.SlugRelatedField(
+    slug_field='id',
+    queryset=Task.objects.all()
+  )
+  executioner = serializers.SlugRelatedField(
+      slug_field='username',
+      queryset=User.objects.all()
+    )
+  class Meta:
+    model = Execution
